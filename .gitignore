@@ -1,1 +1,3 @@
 db/db.sqlite
+runtime/email/*
+!runtime/email/.gitkeep
