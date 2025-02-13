@@ -11,5 +11,8 @@ populate-check-emails:
 check-emails:
 	php tools/CheckEmails.php
 
+populate-send-emails:
+	php tools/PopulateSendEmailQueue.php
+
 send-emails:
 	php tools/SendEmails.php
