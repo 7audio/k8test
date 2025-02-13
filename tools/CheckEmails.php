@@ -3,7 +3,7 @@
 require_once __DIR__ . '/../init.php';
 
 while (true) {
-    $res = $db->query("SELECT user_id, email FROM queue_check_email WHERE lock_at IS NULL OR lock_at = '' LIMIT 5");
+    $res = $db->query("SELECT user_id, email FROM queue_check_email WHERE lock_at IS NULL OR lock_at = '' LIMIT 10");
 
     $batch = [];
     while ($row = $res->fetchArray(SQLITE3_ASSOC)) $batch[] = $row;
@@ -13,7 +13,7 @@ while (true) {
         implode(', ', array_column($batch, 'email')),
     ));
 
-    if (count($batch) === 0) break;
+    if (!count($batch)) break;
 
     $ids = array_column($batch, 'user_id');
     $placeholders = implode(',', array_fill(0, count($ids), '?'));
@@ -36,5 +36,11 @@ while (true) {
         $delStmt = $db->prepare("DELETE FROM queue_check_email WHERE user_id = :uid");
         $delStmt->bindValue(':uid', $userId, SQLITE3_INTEGER);
         $delStmt->execute();
+
+        say(sprintf(
+            "checked email %s: %s",
+            $email,
+            $valid ? '✅' : '❌',
+        ));
     }
 }
