@@ -4,7 +4,7 @@ require_once __DIR__ . '/../init.php';
 
 $db->exec('BEGIN');
 
-$sql = "SELECT user_id, days_left FROM queue_email WHERE sent_at IS NULL AND lock_at IS NULL LIMIT 100";
+$sql = "SELECT user_id, days_left FROM queue_email WHERE sent_at IS NULL AND lock_at IS NULL LIMIT 200";
 $res = $db->query($sql);
 
 $tasks = [];

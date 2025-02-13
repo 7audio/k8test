@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../init.php';
 
-$res = $db->query("SELECT user_id, email FROM queue_check_email WHERE lock_at IS NULL OR lock_at = '' LIMIT 100");
+$res = $db->query("SELECT user_id, email FROM queue_check_email WHERE lock_at IS NULL OR lock_at = '' LIMIT 200");
 
 $batch = [];
 while ($row = $res->fetchArray(SQLITE3_ASSOC)) $batch[] = $row;

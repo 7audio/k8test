@@ -2,7 +2,9 @@
 
 function send_email($from, $to, $text): bool
 {
-    sleep(mt_rand(1, 10));
+    if (!getenv('QUICK')) {
+        sleep(mt_rand(1, 10));
+    }
     $path = sprintf(
         '%s/../runtime/email/%s_%d_%s.txt',
         __DIR__,
