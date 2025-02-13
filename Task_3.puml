@@ -1,0 +1,28 @@
+@startuml
+rectangle "Сервис скачивания/просмотра торрентов" as infra {
+  component "API Gateway" as api
+  component "Load Balancer" as lb
+  component "Сервис аутентификации\n\nJWT" as auth
+  component "Сервис торрентов\n\nскачивание\nшейпинг траффика\nприоритеты" as torrent
+  component "Хранилище\n\nфайлы .torrent/magnet\nблобы\nподд. частичных файлов" as storage
+  component "Сервис стриминга" as streaming
+  component "(опционально)\nСервис перекодировки\n\n(если стриминг\nв разных кач-вах)" as encoding
+
+  database "БД" as db
+}
+
+api --> auth
+api --> torrent
+api --> storage
+api --> streaming
+
+lb -> api
+auth -> db
+torrent -> db
+streaming -> db
+
+torrent -[#red] "Сеть\nTorrent" : seeds/peers/trackers/data
+torrent --> storage
+encoding --> storage
+streaming --> storage
+@enduml
