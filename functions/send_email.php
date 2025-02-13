@@ -1,6 +1,6 @@
 <?php
 
-function send_email($from, $to, $text): void
+function send_email($from, $to, $text): bool
 {
     sleep(mt_rand(1, 10));
     $path = sprintf(
@@ -16,5 +16,5 @@ function send_email($from, $to, $text): void
         $to,
         $text,
     );
-    file_put_contents($path, $content);
+    return (bool) file_put_contents($path, $content);
 }

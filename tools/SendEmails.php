@@ -10,6 +10,8 @@ $res = $db->query($sql);
 $tasks = [];
 while ($row = $res->fetchArray(SQLITE3_ASSOC)) $tasks[] = $row;
 
+say(sprintf("sending %d emails", count($tasks)));
+
 foreach ($tasks as $task) {
     $userId = $task['user_id'];
     $daysLeft = $task['days_left'];
@@ -32,8 +34,10 @@ foreach ($tasks as $task) {
     if (send_email('noreply@mail.com', $uRow['email'], $content)) {
         $updateSentSql = "UPDATE queue_email SET sent_at = datetime('now') WHERE user_id = :uid AND days_left = :days";
         $updSentStmt = $db->prepare($updateSentSql);
-        $updSentStmt->bindValue(':uid',  $userId,  SQLITE3_INTEGER);
-        $updSentStmt->bindValue(':days', $daysLeft,SQLITE3_INTEGER);
+        $updSentStmt->bindValue(':uid', $userId, SQLITE3_INTEGER);
+        $updSentStmt->bindValue(':days', $daysLeft, SQLITE3_INTEGER);
         $updSentStmt->execute();
+
+        say(sprintf("sent email to %s", $uRow['email']));
     }
 }
