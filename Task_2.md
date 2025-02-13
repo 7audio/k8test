@@ -36,7 +36,7 @@ VIEW - Статистика по платежам:
 ```
     SELECT u.id, u.username FROM users u
     JOIN order_stats os ON u.id = os.user_id JOIN payment_stats ps ON u.id = ps.user_id
-    WHERE (os.paid_orders > 2 * os.unpaid_orders) AND (ps.failed_payments / NULLIF(ps.total_payments, 0) < 0.15);
+    WHERE (os.paid_orders > 2 * os.unpaid_orders) AND (ps.failed_payments::float / NULLIF(ps.total_payments, 0) < 0.15);
 ```
 
 Допущения:
