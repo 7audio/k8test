@@ -7,6 +7,11 @@ while (true) {
 
     $batch = [];
     while ($row = $res->fetchArray(SQLITE3_ASSOC)) $batch[] = $row;
+    say(sprintf(
+        "checking %d emails: %s",
+        count($batch),
+        implode(', ', array_column($batch, 'email')),
+    ));
 
     if (count($batch) === 0) break;
 
