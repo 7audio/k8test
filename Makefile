@@ -4,3 +4,8 @@ init:
 
 seed-users:
 	php tools/SeedUsers.php
+
+# check-emails
+
+send-emails:
+	php tools/SendEmails.php
