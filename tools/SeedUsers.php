@@ -9,7 +9,7 @@ $percentHaveSubscription = 80;
 $percentConfirmedEmail = 15;
 
 say(sprintf(
-    "seeding %d users with %d%% having a subscription and %d%% confirmed email",
+    "seeding %d users (%d%% w/ subscription and %d%% w/ confirmed email)",
     $usersTotal,
     $percentHaveSubscription,
     $percentConfirmedEmail,
