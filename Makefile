@@ -5,7 +5,11 @@ init:
 seed-users:
 	php tools/SeedUsers.php
 
-# check-emails
+populate-check-emails:
+	php tools/PopulateCheckEmailQueue.php
+
+check-emails:
+	php tools/CheckEmails.php
 
 send-emails:
 	php tools/SendEmails.php
