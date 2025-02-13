@@ -8,10 +8,16 @@ $batchSize = 100000;
 $percentHaveSubscription = 80;
 $percentConfirmedEmail = 15;
 
+say(sprintf(
+    "seeding %d users with %d%% having a subscription and %d%% confirmed email",
+    $usersTotal,
+    $percentHaveSubscription,
+    $percentConfirmedEmail,
+));
+
 $startTime = microtime(true);
 
-$stmt = $db->prepare("INSERT INTO user (username, email, validts, confirmed, checked, valid) "
-                    ."VALUES (:username, :email, :validts, :confirmed, :checked, :valid)");
+$stmt = $db->prepare("INSERT INTO user (username, email, validts, confirmed, checked, valid) VALUES (:username, :email, :validts, :confirmed, :checked, :valid)");
 
 $db->exec('BEGIN');
 for ($i = 1; $i <= $usersTotal; $i++) {
@@ -28,8 +34,8 @@ for ($i = 1; $i <= $usersTotal; $i++) {
 }
 $db->exec('COMMIT');
 
-echo sprintf(
-    "Inserted %d users in %f seconds.\n",
+say(sprintf(
+    "inserted %d users in %f seconds",
     $usersTotal,
     microtime(true) - $startTime,
-);
+));

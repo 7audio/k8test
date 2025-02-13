@@ -7,6 +7,11 @@ $dbPath = __DIR__ . '/db/db.sqlite';
 $db = new SQLite3($dbPath);
 $db->enableExceptions(true);
 
+function say(string $message): void
+{
+    echo sprintf("[%s] %s\n", date('Y-m-d H:i:s'), $message);
+}
+
 function render(string $file, array $parameters = []): string
 {
     ob_start();
