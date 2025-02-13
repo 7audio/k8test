@@ -1,4 +1,6 @@
 @startuml
+' нужен plantuml-1.2025 чтобы отрендерить
+
 rectangle "Сервис скачивания/просмотра торрентов" as infra {
   component "API Gateway" as api
   component "Load Balancer" as lb
