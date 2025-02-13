@@ -2,23 +2,23 @@
 
 require_once __DIR__ . '/../init.php';
 
-$now = time();
-$oneDayStart = $now + 1 * 86400;
-$oneDayEnd = $now + 2 * 86400;
+function populateSendEmailQueue(SQLite3 $db, int $days): void
+{
+    $now = time();
+    $start = $now + $days * 86400;
+    $end = $now + ($days + 1) * 86400;
 
-$threeDaysStart = $now + 3 * 86400;
-$threeDaysEnd = $now + 4 * 86400;
+    $stmt1 = $db->prepare("INSERT INTO queue_email (user_id, days_left, created_at) SELECT u.id, 1, datetime('now') FROM user u WHERE u.confirmed = 1 AND u.valid = 1 AND u.validts != 0 AND u.validts BETWEEN :start AND :end ON CONFLICT DO NOTHING");
+    $stmt1->bindValue(':start', $start, SQLITE3_INTEGER);
+    $stmt1->bindValue(':end', $end, SQLITE3_INTEGER);
+    $stmt1->execute();
 
-$sqlOneDay = "INSERT INTO queue_email (user_id, days_left, created_at) SELECT u.id, 1, datetime('now') FROM user u WHERE u.confirmed = 1 AND u.valid = 1 AND u.validts != 0 AND u.validts BETWEEN :start1 AND :end1 ON CONFLICT(user_id, days_left) DO NOTHING";
+    say(sprintf(
+        "added %d emails to %d day queue",
+        $insertedRows = $db->changes(),
+        $days,
+    ));
+}
 
-$stmt1 = $db->prepare($sqlOneDay);
-$stmt1->bindValue(':start1', $oneDayStart, SQLITE3_INTEGER);
-$stmt1->bindValue(':end1', $oneDayEnd, SQLITE3_INTEGER);
-$stmt1->execute();
-
-$sqlThreeDays = "INSERT INTO queue_email (user_id, days_left, created_at) SELECT u.id, 3, datetime('now') FROM user u WHERE u.confirmed = 1 AND u.valid = 1 AND u.validts != 0 AND u.validts BETWEEN :start3 AND :end3 ON CONFLICT(user_id, days_left) DO NOTHING";
-
-$stmt2 = $db->prepare($sqlThreeDays);
-$stmt2->bindValue(':start3', $threeDaysStart, SQLITE3_INTEGER);
-$stmt2->bindValue(':end3', $threeDaysEnd, SQLITE3_INTEGER);
-$stmt2->execute();
+populateSendEmailQueue($db, 1);
+populateSendEmailQueue($db, 3);
